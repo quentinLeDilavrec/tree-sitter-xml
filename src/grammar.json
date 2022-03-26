@@ -33,7 +33,7 @@
       "type": "TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[A-Za-z_]([A-Za-z_\\-.])*"
+        "value": "[A-Za-z_]([A-Za-z0-9_\\-.:])*"
       }
     },
     "Names": {
@@ -203,7 +203,7 @@
       "type": "TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "(\"(\\x20|\\xD|\\xA|[a-zA-Z0-9]|[\\-'()+,.\\/:=?;!*#@$_%])*\")|('(\\x20|\\xD|\\xA|[a-zA-Z0-9]|[\\-'()+,.\\/:=?;!*#@$_%])*')"
+        "value": "(\"(\\x20|\\x0D|\\x0A|[a-zA-Z0-9]|[\\-'()+,./:=?;!*#@$_%])*\")|('(\\x20|\\x0D|\\x0A|[a-zA-Z0-9]|[\\-'()+,./:=?;!*#@$_%])*')"
       }
     },
     "CharData": {
@@ -220,8 +220,17 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "SYMBOL",
-            "name": "_Char"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_S"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_Char"
+              }
+            ]
           }
         },
         {
@@ -331,8 +340,11 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_Misc"
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_Misc"
+          }
         },
         {
           "type": "CHOICE",
@@ -2490,6 +2502,9 @@
     }
   ],
   "conflicts": [],
+  "precedences": [],
   "externals": [],
-  "inline": []
+  "inline": [],
+  "supertypes": []
 }
+

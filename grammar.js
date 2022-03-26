@@ -33,7 +33,7 @@ module.exports = grammar({
     //   repeat($._NameChar)
     // ),
 
-    Name: $ => token(/[A-Za-z_]([A-Za-z_\-.])*/),
+    Name: $ => token(/[A-Za-z_]([A-Za-z0-9_\-.:])*/),
 
     Names: $ => seq(
       $.Name,
@@ -123,16 +123,18 @@ module.exports = grammar({
     //   )
     // ),
 
-    PubidLiteral: $ => token(/("(\x20|\xD|\xA|[a-zA-Z0-9]|[\-'()+,./:=?;!*#@$_%])*")|('(\x20|\xD|\xA|[a-zA-Z0-9]|[\-'()+,./:=?;!*#@$_%])*')/),
+    PubidLiteral: $ => token(/("(\x20|\x0D|\x0A|[a-zA-Z0-9]|[\-'()+,./:=?;!*#@$_%])*")|('(\x20|\x0D|\x0A|[a-zA-Z0-9]|[\-'()+,./:=?;!*#@$_%])*')/),
 
-    // _PubidChar: $ => /\x20 | \xD | \xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]/,
+    // _PubidChar: $ => /\x20 | \x0D | \x0A | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]/,
 
     CharData: $ => /[^<&]*/,
 
     Comment: $ => seq(
       '<!--',
-      repeat(
-        $._Char
+      repeat(choice(
+          $._S,
+          $._Char
+        )
       ),
       '-->'
     ),
@@ -167,7 +169,7 @@ module.exports = grammar({
 
     prolog: $ => seq(
       optional($.XMLDecl),
-      $._Misc,
+      repeat1($._Misc),
       optional(
         seq(
           $.doctypedecl,
