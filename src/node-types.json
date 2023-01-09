@@ -14,6 +14,14 @@
         {
           "type": "EntityRef",
           "named": true
+        },
+        {
+          "type": "Sep1",
+          "named": true
+        },
+        {
+          "type": "Sep2",
+          "named": true
         }
       ]
     }
@@ -74,11 +82,6 @@
   },
   {
     "type": "CData",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "Comment",
     "named": true,
     "fields": {}
   },
@@ -226,6 +229,10 @@
         {
           "type": "PEReference",
           "named": true
+        },
+        {
+          "type": "Sep3",
+          "named": true
         }
       ]
     }
@@ -330,6 +337,10 @@
         {
           "type": "PEReference",
           "named": true
+        },
+        {
+          "type": "Sep3",
+          "named": true
         }
       ]
     }
@@ -354,11 +365,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "Name",
+          "named": true
+        },
+        {
+          "type": "Text",
           "named": true
         }
       ]
@@ -402,6 +417,26 @@
         }
       ]
     }
+  },
+  {
+    "type": "Sep1",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "Sep2",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "Sep3",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "Text",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "TextDecl",
@@ -711,7 +746,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "Comment",
@@ -820,10 +855,6 @@
     "named": false
   },
   {
-    "type": "-->",
-    "named": false
-  },
-  {
     "type": "/>",
     "named": false
   },
@@ -833,10 +864,6 @@
   },
   {
     "type": "<",
-    "named": false
-  },
-  {
-    "type": "<!--",
     "named": false
   },
   {
@@ -901,6 +928,10 @@
   },
   {
     "type": "CharRef",
+    "named": true
+  },
+  {
+    "type": "Comment",
     "named": true
   },
   {

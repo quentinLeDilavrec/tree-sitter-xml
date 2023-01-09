@@ -1,0 +1,91 @@
+=====
+first
+=====
+
+<Hello/>
+
+---
+
+(source_file
+  (element
+    (EmptyElemTag
+      (Name))))
+
+=====
+second
+=====
+
+<!--Hello-->
+<Hello/>
+
+---
+
+(source_file
+  (prolog 
+    (Comment))
+  (element
+    (EmptyElemTag
+      (Name))))
+
+=====
+third
+=====
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<modelVersion>4.0.0</modelVersion>
+</project>
+
+---
+
+(source_file
+  (prolog)
+  (element
+    (STag
+      (Name)
+      (Attribute
+        (Name)
+        (AttValue (Text)))
+      (Attribute
+        (Name)
+        (AttValue (Text)))
+      (Attribute
+        (Name)
+        (AttValue (Text))))
+          (element
+            (STag
+              (Name))
+            (ETag
+              (Name)))
+    (ETag
+      (Name))))
+=====
+fourth
+=====
+
+<project> 
+ </project>
+
+---
+
+(source_file
+  (element
+    (STag
+      (Name))
+    (ETag
+      (Name))))
+
+=====
+five
+=====
+
+<description>Profile &amp; Authentication Client for Java</description>
+
+---
+
+(source_file
+  (element
+    (STag
+      (Name))
+    (ETag
+      (Name))))

@@ -1,9 +1,28 @@
 module.exports = grammar({
   name: 'xml',
 
+  extras: $ => [
+  //   $.comment,
+  //   /[\s\uFEFF\u2060\u200B\u00A0]/
+  ],
+
+
+  conflicts: $ => [
+  
+    [$.source_file],
+    [$.prolog],
+    [$.element],
+    [$.source_file, $.prolog],
+    [$.Sep1],
+    [$.Sep2],
+    [$.EmptyElemTag],
+  ],
+
   rules: {
     source_file: $ => seq(
-      $.prolog,
+      repeat($._Misc),
+      optional($.prolog),
+      repeat($._Misc),
       $.element,
       repeat($._Misc)
     ),
@@ -14,7 +33,7 @@ module.exports = grammar({
 
     // _S: $ => /(\x20|\x9|\xD|\xA)+/,
 
-    _S: $ => /\s/,
+    _S: $ => /[\s]|\r?\n/,
 
     // _NameStartChar: $ => /: | [A-Z] | _ | [a-z] | [\xC0-\xD6] | [\xD8-\xF6] | [\uF8-\u2FF] | [\u370-\u37D] | [\u37F-\u1FFF] | [\u200C-\u200D] | [\u2070-\u218F] | [\u2C00-\u2FEF] | [\u3001-\uD7FF] | [\uF900-\uFDCF] | [\uFDF0-\uFFFD] | [\u10000-\uEFFFF]/,
     //
@@ -77,7 +96,7 @@ module.exports = grammar({
       '"',
       repeat(
         choice(
-          /[^%&"]/,
+          $.Sep3,
           $.PEReference,
           $._Reference
         )
@@ -90,7 +109,7 @@ module.exports = grammar({
         '"',
         repeat(
           choice(
-            /[^<&]/,
+            $.Sep1,
             $._Reference
           )
         ),
@@ -100,13 +119,17 @@ module.exports = grammar({
         '\'',
         repeat(
           choice(
-            /[^<&]/,
+            $.Sep2,
             $._Reference
           )
         ),
         '\''
       )
     ),
+
+    Sep1: $ => prec.right(repeat1(/[^<&"]/)),
+    Sep2: $ => prec.right(repeat1(/[^<&']/)),
+    Sep3: $ => prec.right(repeat1(/[^%&"]/)),
 
     SystemLiteral: $ => token(/("[^"]*")|('[^']*')/),
 
@@ -127,28 +150,36 @@ module.exports = grammar({
 
     // _PubidChar: $ => /\x20 | \x0D | \x0A | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]/,
 
-    CharData: $ => /[^<&]*/,
+    CharData: $ => token(/[^\s\n\r<&][^<&]*/),
 
-    Comment: $ => seq(
-      '<!--',
-      repeat(choice(
-          $._S,
-          $._Char
-        )
-      ),
-      '-->'
+    Text: $ => repeat1(
+      choice(
+        $._S,
+        $._Char
+      )
     ),
+    
+    // Comment: $ => seq(
+    //   '<!--',
+    //   optional(
+    //     $.Text,
+    //   ),
+    //   '-->'
+    // ),
+
+    Comment: $ => token(choice(
+      seq(
+        '<!--',
+        /([^-]|-[^-])*/,
+        '-->'
+      )
+    )),
 
     PI: $ => seq(
       '<?',
       $._PITarget,
       optional(
-        seq(
-          $._S,
-          repeat(
-            $._Char
-          )
-        )
+        $.Text
       ),
       '?>'
     ),
@@ -167,15 +198,29 @@ module.exports = grammar({
 
     _CDEnd: $ => ']]>',
 
-    prolog: $ => seq(
-      optional($.XMLDecl),
-      repeat1($._Misc),
-      optional(
-        seq(
+    prolog: $ => choice(
+      // seq(
+      //   optional($.XMLDecl),
+      //   repeat($._Misc),
+      //   optional(
+      //     seq(
+      //       $.doctypedecl,
+      //       // repeat($._Misc)
+      //     )
+      //   )
+      // ),
+      seq(
+        $.XMLDecl,
+        optional(seq(
+          repeat($._Misc), // TODO check if it might break compression
           $.doctypedecl,
-          repeat($._Misc)
-        )
-      )
+        )),
+      ),
+      seq(
+        optional($.XMLDecl),
+        repeat($._Misc),
+        $.doctypedecl,
+      ),
     ),
 
     XMLDecl: $ => seq(
@@ -298,27 +343,31 @@ module.exports = grammar({
         )
       )
     ),
-
+    
     element: $ => choice(
       $.EmptyElemTag,
       seq(
         $.STag,
+        repeat($._S),
         optional($.CharData),
+        repeat($._S),
         optional($._content),
         $.ETag
       )
     ),
+
+    _SS: $ => prec.right(10, $._S),
 
     STag: $ => seq(
       '<',
       $.Name,
       repeat(
         seq(
-          $._S,
+          repeat1($._S),
           $.Attribute
         )
       ),
-      optional($._S),
+      repeat($._S),
       '>'
     ),
 
@@ -336,16 +385,19 @@ module.exports = grammar({
     ),
 
     _content: $ => repeat1(
-      seq(
+      // seq(
         choice(
           $.element,
           $._Reference,
           $._CDSect,
           $.PI,
-          $.Comment
+          $.Comment,
+          prec.right(repeat1($._S)),
+          $.CharData,
         ),
-        optional($.CharData)
-      )
+        // choice(repeat($._S),$.CharData)
+      //  optional(alias('CharData',$._AAA))
+      // )
     ),
 
     EmptyElemTag: $ => seq(
@@ -353,7 +405,7 @@ module.exports = grammar({
       $.Name,
       repeat(
         seq(
-          $._S,
+          repeat1($._S),
           $.Attribute
         )
       ),
@@ -601,7 +653,8 @@ module.exports = grammar({
 
     EntityRef: $ => seq(
       '&',
-      $.Name
+      $.Name,
+      ';'
     ),
 
     PEReference: $ => seq(
