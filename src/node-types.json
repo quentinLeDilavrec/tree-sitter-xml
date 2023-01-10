@@ -81,16 +81,6 @@
     }
   },
   {
-    "type": "CDEnd",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "CData",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "DefaultDecl",
     "named": true,
     "fields": {},
@@ -602,15 +592,7 @@
       "required": true,
       "types": [
         {
-          "type": "CDEnd",
-          "named": true
-        },
-        {
-          "type": "CDStart",
-          "named": true
-        },
-        {
-          "type": "CData",
+          "type": "CDSect",
           "named": true
         },
         {
@@ -939,7 +921,7 @@
     "named": false
   },
   {
-    "type": "CDStart",
+    "type": "CDSect",
     "named": true
   },
   {

@@ -186,17 +186,35 @@ module.exports = grammar({
 
     _PITarget: $ => $.Name,
 
-    _CDSect: $ => seq(
-      $.CDStart,
-      optional($.CData),
-      $.CDEnd
-    ),
+    // CDSect: $ => seq(
+    //   $.CDStart,
+    //   optional($.CData),
+    //   $.CDEnd
+    // ),
 
-    CDStart: $ => '<![CDATA',
+    CDSect: $ => token(prec(3,
+      seq(
+        '<![CDATA',
+        /[^\]]*\]+([^>\]][^\]]*\]+)*/,
+        '>'
+      )
+    )),
 
-    CData: $ => repeat1($._Char),
+    // CDStart: $ => '<![CDATA',
 
-    CDEnd: $ => ']]>',
+    // // CData: $ => repeat1($._Char),
+    // CData: $ => repeat1(token(/[^\]]([^\]][^>])*/)),
+
+    // comment: $ => token(prec(PREC.COMMENT, choice(
+    //   seq('//', /.*/),
+    //   seq(
+    //     '/*',
+    //     /[^*]*\*+([^/*][^*]*\*+)*/,
+    //     '/'
+    //   )
+    // ))),
+
+    // CDEnd: $ => ']]>',
 
     prolog: $ => choice(
       // seq(
@@ -389,7 +407,7 @@ module.exports = grammar({
         choice(
           $.element,
           $._Reference,
-          $._CDSect,
+          $.CDSect,
           $.PI,
           $.Comment,
           prec.right(repeat1($._S)),

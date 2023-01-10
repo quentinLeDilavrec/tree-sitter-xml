@@ -342,45 +342,29 @@
       "type": "SYMBOL",
       "name": "Name"
     },
-    "_CDSect": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "CDStart"
-        },
-        {
-          "type": "CHOICE",
+    "CDSect": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 3,
+        "content": {
+          "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "CData"
+              "type": "STRING",
+              "value": "<![CDATA"
             },
             {
-              "type": "BLANK"
+              "type": "PATTERN",
+              "value": "[^\\]]*\\]+([^>\\]][^\\]]*\\]+)*"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
             }
           ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "CDEnd"
         }
-      ]
-    },
-    "CDStart": {
-      "type": "STRING",
-      "value": "<![CDATA"
-    },
-    "CData": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "SYMBOL",
-        "name": "_Char"
       }
-    },
-    "CDEnd": {
-      "type": "STRING",
-      "value": "]]>"
     },
     "prolog": {
       "type": "CHOICE",
@@ -1063,7 +1047,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_CDSect"
+            "name": "CDSect"
           },
           {
             "type": "SYMBOL",
