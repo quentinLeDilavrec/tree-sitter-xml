@@ -118,7 +118,7 @@
         }
       ]
     },
-    "_EntityValue": {
+    "EntityValue": {
       "type": "SEQ",
       "members": [
         {
@@ -347,7 +347,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_CDStart"
+          "name": "CDStart"
         },
         {
           "type": "CHOICE",
@@ -363,11 +363,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_CDEnd"
+          "name": "CDEnd"
         }
       ]
     },
-    "_CDStart": {
+    "CDStart": {
       "type": "STRING",
       "value": "<![CDATA"
     },
@@ -378,7 +378,7 @@
         "name": "_Char"
       }
     },
-    "_CDEnd": {
+    "CDEnd": {
       "type": "STRING",
       "value": "]]>"
     },
@@ -2272,7 +2272,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_EntityValue"
+            "name": "EntityValue"
           },
           {
             "type": "SEQ",
@@ -2303,7 +2303,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_EntityValue"
+          "name": "EntityValue"
         },
         {
           "type": "SYMBOL",

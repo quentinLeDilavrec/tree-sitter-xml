@@ -92,7 +92,7 @@ module.exports = grammar({
       )
     ),
 
-    _EntityValue: $ => seq(
+    EntityValue: $ => seq(
       '"',
       repeat(
         choice(
@@ -187,16 +187,16 @@ module.exports = grammar({
     _PITarget: $ => $.Name,
 
     _CDSect: $ => seq(
-      $._CDStart,
+      $.CDStart,
       optional($.CData),
-      $._CDEnd
+      $.CDEnd
     ),
 
-    _CDStart: $ => '<![CDATA',
+    CDStart: $ => '<![CDATA',
 
     CData: $ => repeat1($._Char),
 
-    _CDEnd: $ => ']]>',
+    CDEnd: $ => ']]>',
 
     prolog: $ => choice(
       // seq(
@@ -692,7 +692,7 @@ module.exports = grammar({
 
     _EntityDef: $ => prec.left(
       choice(
-        $._EntityValue,
+        $.EntityValue,
         seq(
           $.ExternalID,
           optional($.NDataDecl)
@@ -701,7 +701,7 @@ module.exports = grammar({
     ),
 
     _PEDef: $ => choice(
-      $._EntityValue,
+      $.EntityValue,
       $.ExternalID
     ),
 

@@ -81,6 +81,11 @@
     }
   },
   {
+    "type": "CDEnd",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "CData",
     "named": true,
     "fields": {}
@@ -165,6 +170,33 @@
     }
   },
   {
+    "type": "EntityValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "CharRef",
+          "named": true
+        },
+        {
+          "type": "EntityRef",
+          "named": true
+        },
+        {
+          "type": "PEReference",
+          "named": true
+        },
+        {
+          "type": "Sep3",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "Enumeration",
     "named": true,
     "fields": {},
@@ -207,11 +239,7 @@
       "required": true,
       "types": [
         {
-          "type": "CharRef",
-          "named": true
-        },
-        {
-          "type": "EntityRef",
+          "type": "EntityValue",
           "named": true
         },
         {
@@ -224,14 +252,6 @@
         },
         {
           "type": "Name",
-          "named": true
-        },
-        {
-          "type": "PEReference",
-          "named": true
-        },
-        {
-          "type": "Sep3",
           "named": true
         }
       ]
@@ -319,11 +339,7 @@
       "required": true,
       "types": [
         {
-          "type": "CharRef",
-          "named": true
-        },
-        {
-          "type": "EntityRef",
+          "type": "EntityValue",
           "named": true
         },
         {
@@ -332,14 +348,6 @@
         },
         {
           "type": "Name",
-          "named": true
-        },
-        {
-          "type": "PEReference",
-          "named": true
-        },
-        {
-          "type": "Sep3",
           "named": true
         }
       ]
@@ -593,6 +601,14 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "CDEnd",
+          "named": true
+        },
+        {
+          "type": "CDStart",
+          "named": true
+        },
         {
           "type": "CData",
           "named": true
@@ -921,6 +937,10 @@
   {
     "type": "ANY",
     "named": false
+  },
+  {
+    "type": "CDStart",
+    "named": true
   },
   {
     "type": "CharData",
